@@ -21,9 +21,12 @@ app.get('/:latitude/:longitude', (req, res) => {
 	const url = `https://api.darksky.net/forecast/${process.env.SECRET_KEY}/${latitude},${longitude}?units=ca&exclude=[minutely,daily]`;
 	
 	request(url, (error, response, body) => {
+		console.log(`requested dark sky api for ${latitude}, ${longitude}`);
 		if (!error && response.statusCode == 200) {
 			const data = JSON.parse(body);
 			res.send(data);
+		} else {
+			console.error(error);
 		}
 	});
 
