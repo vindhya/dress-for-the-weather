@@ -4,20 +4,25 @@ const app = {};
 // or take location text input from form
 // send location to backend for API
 
-app.getWeather = async position => {
-	const lat = position.coords.latitude;
-	const long = position.coords.longitude;
-	const response = await fetch(`http://localhost:3000/${lat}/${long}`);
-	const weather = await response.json();
-	console.log(position, weather);
+app.getWeather = async (lat, long) => {
+	try {
+		const response = await fetch(`http://localhost:3000/${lat}/${long}`);
+		const weather = await response.json();
+
+		console.log('dark sky response', weather);
+		return weather;
+		
+	} catch(err) {
+		console.error(err);
+	}
 };
 
 app.init = () => {
 
 	$('#location-button').on('click', function(e) {
 		navigator.geolocation.getCurrentPosition(position => {
-			// console.log(position);
-			app.getWeather(position);
+			console.log('position', position);
+			app.getWeather(position.coords.latitude, position.coords.longitude);
     });
 	});
 
