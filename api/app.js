@@ -46,7 +46,6 @@ app.get('/:latitude/:longitude', (req, res) => {
 		} else {
 			console.error(error);
 		}
-
 	});
 
 });
