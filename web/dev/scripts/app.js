@@ -4,21 +4,11 @@ const app = {};
 // or take location text input from form
 // send location to backend for API
 
-app.promise = $.ajax({
-	url: 'http://localhost:3000/64.126521/-79.39326740000001',
-	dataType: 'JSON'
-});
-
-app.getWeatherFirst = position => {
-	$.when(app.promise).done(function(weather) {
-		console.log(weather);
-	});
-
-	console.log('weather gotten!');
-};
-
 app.getWeather = async position => {
-	const weather = await fetch('http://localhost:3000/64.126521/-79.39326740000001');
+	const lat = position.coords.latitude;
+	const long = position.coords.longitude;
+	const response = await fetch(`http://localhost:3000/${lat}/${long}`);
+	const weather = await response.json();
 	console.log(position, weather);
 };
 
@@ -30,17 +20,6 @@ app.init = () => {
 			app.getWeather(position);
     });
 	});
-
-	// fetch('http://localhost:3000/64.126521/-79.39326740000001')
-	// 	.then(data => {
-	// 		return data.json();
-	// 	})
-	// 	.then(weather => {
-	// 		console.log(weather);
-	// 	})
-	// 	.catch(err => {
-	// 		console.error(err);
-	// 	});
 
 };
 
