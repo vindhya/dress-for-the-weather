@@ -5,6 +5,10 @@ body {
   background-size: cover;
   background-image: url("../images/black.png"); }
 
+a {
+  color: white;
+  text-decoration: underline; }
+
 header {
   margin: 30px 0; }
 
