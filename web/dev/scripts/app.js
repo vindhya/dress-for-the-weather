@@ -8,58 +8,70 @@ const app = {};
 app.apiDomain = 'http://localhost:3000';
 app.$locationInput = $('.location-input');
 app.$messageDiv = $('#message');
-app.clothes = {
-	tops: [
-		{
-			name: 'short-sleeved shirt',
-			underLayer: true,
-			value: 5,
-			minTemp: 10
-		},
-		{
-			name: 'long-sleeved shirt',
-			underLayer: true,
-			value: 10,
-			maxTemp: 20
-		},
-		{
-			name: 'sweater',
-			overLayer: true,
-			value: 15,
-			maxTemp: 20
-		},
-		{
-			name: 'jacket',
-			overLayer: true,
-			value: 20,
-			maxTemp: 20
-		}
-	],
-	bottoms: [
-		{
-			name: 'shorts',
-			value: 5,
-			minTemp: 18
-		},
-		{
-			name: 'pants',
-			value: 10,
-			maxTemp: 30
-		}
-	],
-	accessories: [
-		{
-			name: 'sunglasses',
-			condition: 'sunny',
-			verb: 'wear'
-		},
-		{
-			name: 'umbrella',
-			condition: 'rainy',
-			verb: 'carry'
-		}
-	]
-};
+app.outfits = [
+	{
+		minTemp: -1000,
+		maxTemp: -30,
+		clothes: ['full body snow suit', 'winter boots']
+	},
+	{
+		minTemp: -29,
+		maxTemp: -15,
+		clothes: ['parka', 'thermal underwear', 'sweater', 'warm pants', 'winter boots']
+	},
+	{
+		minTemp: -14,
+		maxTemp: -10,
+		clothes: ['parka', 'long-sleeved shirt', 'pants', 'boots']
+	},
+	{
+		minTemp: -9,
+		maxTemp: 0,
+		clothes: ['wool coat', 'sweater', 'pants']
+	},
+	{
+		minTemp: 1,
+		maxTemp: 10,
+		clothes: ['jacket', 'long-sleeved shirt', 'pants']
+	},
+	{
+		minTemp: 11,
+		maxTemp: 15,
+		clothes: ['light jacket', 't-shirt', 'pants']
+	},
+	{
+		minTemp: 16,
+		maxTemp: 19,
+		clothes: ['long-sleeved shirt', 'pants']
+	},
+	{
+		minTemp: 20,
+		maxTemp: 23,
+		clothes: ['t-shirt', 'pants']
+	},
+	{
+		minTemp: 24,
+		maxTemp: 1000,
+		clothes: ['t-shirt', 'shorts', 'sandals']
+	}
+];
+app.accessories = [
+	{
+		name: 'sunglasses',
+		condition: 'sunny',
+		verb: 'wear'
+	},
+	{
+		name: 'umbrella',
+		condition: 'rainy',
+		verb: 'carry'
+	},
+	{
+		name: 'snowshoes',
+		condition: 'snowy',
+		verb: 'wear'
+	}
+];
 
 // get the weather from using my server which is calling the dark sky api
 app.getWeather = async (lat, long) => {
@@ -81,7 +93,7 @@ app.getWeatherFromQuery = async query => {
 		const geocode = await geocodeResponse.json();
 		
 		if (geocode.resourceSets[0].estimatedTotal === 0) {
-			$messageDiv.text('your query sucks');
+			app.$messageDiv.text(`Sorry, that location couldn't be found.`);
 		} else {
 			const lat = geocode.resourceSets[0].resources[0].point.coordinates[0];
 			const long =  geocode.resourceSets[0].resources[0].point.coordinates[1];
@@ -93,24 +105,40 @@ app.getWeatherFromQuery = async query => {
 	}
 };
 
+// display a random photo from unsplash as the background based on the current weather summary
 app.displayBackground = async summary => {
 	const imgResponse = await fetch(`${app.apiDomain}/random-photo/${summary}`);
 	const img = await imgResponse.json();
 	const attribution = img.user;
-	console.log(img);
+	// console.log(img);
 
 	$('body').css('background-image', `url('${img.urls.regular}')`);
 	$('footer').append(` Photo by <a href="${attribution.links.html}" target="_blank">${attribution.name}</a> on <a href="https://unsplash.com/" target="_blank">Unsplash</a>`);
-
-	console.log('background displayed!');
 };
 
+// takes the summary and description from weather data and displays it in the #message div
 app.displayWeatherSummary = (summary, description) => {
 	const markup = `
 		<p class="lead">${summary}</p>
 		<p>${description}</p>
 	`;
 	app.$messageDiv.html(markup);
+};
+
+// displays the appropriate outfit based on the current weather
+app.displayOutfitReco = weather => {
+	const temp = Math.floor(weather.currently.apparentTemperature);
+	
+	// iterate through the list of outfits and find the clothes that this temp falls into
+	const wearOutfit = app.outfits.filter(outfit => ((temp >= outfit.minTemp) && (temp <= outfit.maxTemp)));
+	console.log('wearOutfit', wearOutfit);
+
+	$('#recommendation').html(`<h4>What to wear:</h4><ul></ul>`);
+	const $recoList = $('#recommendation ul');
+
+	wearOutfit[0].clothes.forEach(clothing => {
+		$recoList.append(`<li>${clothing}</li>`);
+	});
 };
 
 // kick off the logic to display stuff
@@ -120,6 +148,7 @@ app.displayWeather = async weatherPromise => {
 
 	app.displayBackground(weather.currently.summary);
 	app.displayWeatherSummary(weather.currently.summary, weather.hourly.summary);
+	app.displayOutfitReco(weather);
 };
 
 app.init = () => {
