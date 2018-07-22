@@ -15,7 +15,7 @@ app.use(function(req, res, next) {
 
 app.get('/', (req, res) => res.send('hello world!'));
 
-app.get('/:query', (req, res) => {
+app.get('/geocode/:query', (req, res) => {
 	const query = req.params.query;
 	const url = `http://dev.virtualearth.net/REST/v1/Locations/${query}?maxResults=1&key=${process.env.BINGMAPS_KEY}`;
 
@@ -32,7 +32,7 @@ app.get('/:query', (req, res) => {
 
 });
 
-app.get('/:latitude/:longitude', (req, res) => {
+app.get('/weather/:latitude/:longitude', (req, res) => {
 	const latitude = req.params.latitude;
 	const longitude = req.params.longitude;
 	const url = `https://api.darksky.net/forecast/${process.env.DARKSKY_KEY}/${latitude},${longitude}?units=ca&exclude=[minutely,daily]`;
@@ -43,6 +43,26 @@ app.get('/:latitude/:longitude', (req, res) => {
 		if (!error && response.statusCode == 200) {
 			const data = JSON.parse(body);
 			res.send(data);
+		} else {
+			console.error(error);
+		}
+	});
+
+});
+
+app.get('/random-photo/:query', (req, res) => {
+	// const width = req.params.width;
+	// const height = req.params.height;
+	const query = req.params.query;
+	const orientation = 'landscape';
+	const url = `https://api.unsplash.com/photos/random?client_id=${process.env.UNSPLASH_KEY}&featured&query=${query}&orientation=${orientation}`;
+
+	request(url, (error, response, body) => {
+		console.log(`requested unsplash api for random photo: ${query}`);
+
+		if (!error && response.statusCode == 200) {
+			const data = JSON.parse(body);
+			res.send(data.urls.regular);
 		} else {
 			console.error(error);
 		}
