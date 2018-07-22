@@ -1,6 +1,6 @@
 body {
   color: white;
-  background: white;
+  background: black;
   transition: background-image 2s ease;
   background-size: cover;
   background-image: url("../images/black.png"); }
@@ -19,7 +19,3 @@ footer {
   padding-top: 10px;
   padding-bottom: 30px;
   margin: 30px auto; }
-
-.bg-image {
-  background-image: url("../images/partly-cloudy.jpeg");
-  background-size: cover; }

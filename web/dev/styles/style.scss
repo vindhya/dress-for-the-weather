@@ -1,6 +1,6 @@
 body {
 	color: white;
-	background: white;
+	background: black;
 	transition: background-image 2s ease;
 	background-size: cover;
 	background-image: url('../images/black.png');
@@ -26,8 +26,7 @@ footer {
 	margin: 30px auto;
 }
 
-.bg-image {
-	background-image: url('../images/partly-cloudy.jpeg');
-	background-size: cover;
-	// background-repeat: no-repeat;
-}
+// .bg-image {
+// 	background-image: url('../images/partly-cloudy.jpeg');
+// 	background-size: cover;
+// }
