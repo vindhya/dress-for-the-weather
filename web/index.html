@@ -13,29 +13,33 @@
 
 <body>
 
-	<header class="container">
-		<h1 class="display-4 text-center">Dress for the Weather</h1>
-	</header>
+	<div class="container content-box">
 
-	<main class="container">
-		<div class="d-flex flex-row justify-content-center location-input">
-			<div class="p-2">
-				<button id="location-button" class="btn btn-primary">Use My Location</button>
+		<header class="container">
+			<h1 class="display-4 text-center">Dress for the Weather</h1>
+		</header>
+
+		<main class="container">
+			<div class="d-flex flex-row justify-content-center location-input">
+				<div class="p-2">
+					<button id="location-button" class="btn btn-primary">Use My Location</button>
+				</div>
+
+				<div class="p-2">
+					<form action="">
+						<label for="location">or enter your location:</label>
+						<input type="text" name="location" id="location-text">
+						<button type="submit" class="btn btn-primary">Submit</button>
+					</form>
+				</div>
 			</div>
 
-			<div class="p-2">
-				<form action="">
-					<label for="location">or enter your location:</label>
-					<input type="text" name="location" id="location-text">
-					<button type="submit" class="btn btn-primary">Submit</button>
-				</form>
-			</div>
-		</div>
+			<div id="message"></div>
+		</main>
 
-		<div id="message"></div>
-	</main>
+		<footer class="container">Powered by Dark Sky and Unsplash</footer>
 
-	<footer class="container">Powered by Dark Sky and Unsplash</footer>
+	</div>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 	 crossorigin="anonymous"></script>

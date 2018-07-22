@@ -1,10 +1,25 @@
 body {
-  background: black;
-  color: white; }
+  color: white;
+  background: white;
+  transition: background-image 2s ease;
+  background-size: cover;
+  background-image: url("../images/black.png"); }
 
 header {
   margin: 30px 0; }
 
 main {
-  height: 90vh;
   margin-bottom: 30px; }
+
+footer {
+  text-align: right; }
+
+.content-box {
+  background: rgba(0, 0, 0, 0.5);
+  padding-top: 10px;
+  padding-bottom: 30px;
+  margin: 30px auto; }
+
+.bg-image {
+  background-image: url("../images/partly-cloudy.jpeg");
+  background-size: cover; }

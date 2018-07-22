@@ -1,6 +1,9 @@
 body {
-	background: black;
 	color: white;
+	background: white;
+	transition: background-image 2s ease;
+	background-size: cover;
+	background-image: url('../images/black.png');
 }
 
 header {
@@ -8,6 +11,22 @@ header {
 }
 
 main {
-	height: 90vh;
+	// height: 75vh;
 	margin-bottom: 30px;
+}
+
+footer {
+	text-align: right;
+}
+
+.content-box {
+	background: rgba(black, .5);
+	padding-top: 10px;
+	padding-bottom: 30px;
+	margin: 30px auto;
+}
+
+.bg-image {
+	background-image: url('../images/partly-cloudy.jpeg');
+	background-size: cover;
 }
