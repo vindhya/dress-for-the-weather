@@ -94,8 +94,11 @@ app.getWeatherFromQuery = async query => {
 };
 
 app.displayBackground = async summary => {
-	const img = 'public/images/partly-cloudy.jpeg';
-	$('body').toggleClass('bg-image');
+	const imgResponse = await fetch(`${app.apiDomain}/random-photo/${summary}`);
+	const img = await imgResponse.json();
+	console.log(img);
+
+	$('body').css('background-image', `url('${img.regular}')`);
 
 	console.log('background displayed!');
 };
@@ -115,7 +118,6 @@ app.displayWeather = async weatherPromise => {
 
 	app.displayBackground(weather.currently.summary);
 	app.displayWeatherSummary(weather.currently.summary, weather.hourly.summary);
-
 };
 
 app.init = () => {
