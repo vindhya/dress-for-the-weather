@@ -96,9 +96,11 @@ app.getWeatherFromQuery = async query => {
 app.displayBackground = async summary => {
 	const imgResponse = await fetch(`${app.apiDomain}/random-photo/${summary}`);
 	const img = await imgResponse.json();
+	const attribution = img.user;
 	console.log(img);
 
-	$('body').css('background-image', `url('${img.regular}')`);
+	$('body').css('background-image', `url('${img.urls.regular}')`);
+	$('footer').append(` Photo by <a href="${attribution.links.html}" target="_blank">${attribution.name}</a> on <a href="https://unsplash.com/" target="_blank">Unsplash</a>`);
 
 	console.log('background displayed!');
 };
