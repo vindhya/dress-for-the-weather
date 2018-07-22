@@ -64,7 +64,7 @@ app.clothes = {
 // get the weather from using my server which is calling the dark sky api
 app.getWeather = async (lat, long) => {
 	try {
-		const weatherResponse = await fetch(`${app.apiDomain}/${lat}/${long}`);
+		const weatherResponse = await fetch(`${app.apiDomain}/weather/${lat}/${long}`);
 		const weather = await weatherResponse.json();
 		return weather;
 
@@ -77,7 +77,7 @@ app.getWeather = async (lat, long) => {
 // then call getWeather on the coordinates
 app.getWeatherFromQuery = async query => {
 	try {
-		const geocodeResponse = await fetch(`${app.apiDomain}/${query}`);
+		const geocodeResponse = await fetch(`${app.apiDomain}/geocode/${query}`);
 		const geocode = await geocodeResponse.json();
 		
 		if (geocode.resourceSets[0].estimatedTotal === 0) {
@@ -95,7 +95,7 @@ app.getWeatherFromQuery = async query => {
 
 app.displayBackground = async summary => {
 	const img = 'public/images/partly-cloudy.jpeg';
-	
+	$('body').toggleClass('bg-image');
 
 	console.log('background displayed!');
 };
