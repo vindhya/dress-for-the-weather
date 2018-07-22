@@ -62,7 +62,7 @@ app.get('/random-photo/:query', (req, res) => {
 
 		if (!error && response.statusCode == 200) {
 			const data = JSON.parse(body);
-			res.send(data.urls.regular);
+			res.send(data.urls);
 		} else {
 			console.error(error);
 		}
