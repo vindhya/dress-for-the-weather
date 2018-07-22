@@ -13,28 +13,34 @@
 
 <body>
 
-	<div class="container">
+	<header class="container">
+		<h1 class="display-4">Dress for the Weather:</h1>
+	</header>
 
-		<h1>What should I wear today?</h1>
+	<main class="container">
+		<div class="d-flex flex-row">
+			<div class="p-2">
+				<button id="location-button" class="btn btn-primary">Use My Location</button>
+			</div>
 
-		<button id="location-button">Use My Location</button>
-
-		<form action="">
-			<label for="location">or enter your location:</label>
-			<input type="text" name="location" id="location-text">
-			<button type="submit">Submit</button>
-		</form>
+			<div class="p-2">
+				<form action="">
+					<label for="location">or enter your location:</label>
+					<input type="text" name="location" id="location-text">
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</form>
+			</div>
+		</div>
 
 		<div id="message"></div>
+	</main>
 
-		<footer>Powered by Dark Sky</footer>
-
-	</div>
+	<footer class="container">Powered by Dark Sky and Unsplash</footer>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 	 crossorigin="anonymous"></script>
-	<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
-	 crossorigin="anonymous"></script> -->
+	<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js " integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em "
+	 crossorigin="anonymous "></script> -->
 	<script src="public/scripts/app.js"></script>
 </body>
 
