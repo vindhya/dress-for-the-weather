@@ -113,14 +113,14 @@ app.displayBackground = async summary => {
 	// console.log(img);
 
 	$('body').css('background-image', `url('${img.urls.regular}')`);
-	$('footer').append(` Photo by <a href="${attribution.links.html}" target="_blank">${attribution.name}</a> on <a href="https://unsplash.com/" target="_blank">Unsplash</a>`);
+	$('footer').html(`Powered by Dark Sky. Photo by <a href="${attribution.links.html}" target="_blank">${attribution.name}</a> on <a href="https://unsplash.com/" target="_blank">Unsplash</a>`);
 };
 
 // takes the summary and description from weather data and displays it in the #message div
-app.displayWeatherSummary = (summary, description) => {
+app.displayWeatherSummary = (summary, description, temperature) => {
 	const markup = `
-		<p class="lead">${summary}</p>
-		<p>${description}</p>
+		<h4>${summary}</h4>
+		<p>It feels like ${Math.round(temperature)}°C outside. ${description}</p>
 	`;
 	app.$messageDiv.html(markup);
 };
@@ -147,7 +147,7 @@ app.displayWeather = async weatherPromise => {
 	console.log(weather);
 
 	app.displayBackground(weather.currently.summary);
-	app.displayWeatherSummary(weather.currently.summary, weather.hourly.summary);
+	app.displayWeatherSummary(weather.currently.summary, weather.hourly.summary, weather.currently.apparentTemperature);
 	app.displayOutfitReco(weather);
 };
 
