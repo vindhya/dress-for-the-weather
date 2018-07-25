@@ -8,6 +8,7 @@ const app = {};
 app.apiDomain = 'http://localhost:3000';
 app.$locationInput = $('.location-input');
 app.$messageDiv = $('#message');
+app.$recoDiv = $('#recommendation');
 app.outfits = [
 	{
 		minTemp: -1000,
@@ -58,18 +59,15 @@ app.outfits = [
 app.accessories = [
 	{
 		name: 'sunglasses',
-		condition: 'sunny',
-		verb: 'wear'
+		condition: 'sunny'
 	},
 	{
 		name: 'umbrella',
-		condition: 'rainy',
-		verb: 'carry'
+		precipType: 'rain'
 	},
 	{
 		name: 'snowshoes',
-		condition: 'snowy',
-		verb: 'wear'
+		precipType: 'snow'
 	}
 ];
 
@@ -133,12 +131,29 @@ app.displayOutfitReco = weather => {
 	const wearOutfit = app.outfits.filter(outfit => ((temp >= outfit.minTemp) && (temp <= outfit.maxTemp)));
 	console.log('wearOutfit', wearOutfit);
 
-	$('#recommendation').html(`<h4>What to wear:</h4><ul></ul>`);
+	app.$recoDiv.html(`<h4>What to wear:</h4><ul></ul>`);
 	const $recoList = $('#recommendation ul');
 
 	wearOutfit[0].clothes.forEach(clothing => {
 		$recoList.append(`<li>${clothing}</li>`);
 	});
+};
+
+// displays an accessory recommendation based on precipitation type and current probability
+app.displayAccessoryReco = weather => {
+	const precipType = weather.currently.precipType;
+	const precipProb = weather.currently.precipProbability;
+
+	console.log('precipType', precipType);
+	console.log('precipProb', precipProb);
+
+	if (precipProb > .5) {
+		app.accessories.forEach(accessory => {
+			if (accessory.precipType === precipType) {
+				app.$recoDiv.append(`<p>Don't forget to bring your ${accessory.name}!</p>`);
+			}
+		});
+	}
 };
 
 // kick off the logic to display stuff
@@ -149,6 +164,7 @@ app.displayWeather = async weatherPromise => {
 	app.displayBackground(weather.currently.summary);
 	app.displayWeatherSummary(weather.currently.summary, weather.hourly.summary, weather.currently.apparentTemperature);
 	app.displayOutfitReco(weather);
+	app.displayAccessoryReco(weather);
 };
 
 app.init = () => {
