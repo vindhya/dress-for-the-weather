@@ -6,6 +6,7 @@
 const app = {};
 
 app.apiDomain = 'http://localhost:3000';
+app.imagePath = 'public/images'
 app.$locationInput = $('.location-input');
 app.$messageDiv = $('#message');
 app.$recoDiv = $('#recommendation');
@@ -13,63 +14,85 @@ app.outfits = [
 	{
 		minTemp: -1000,
 		maxTemp: -30,
-		clothes: ['full body snow suit', 'winter boots']
+		clothes: ['full body snow suit', 'winter boots'],
+		image: '-30.jpg'
 	},
 	{
 		minTemp: -29,
 		maxTemp: -15,
-		clothes: ['parka', 'thermal underwear', 'sweater', 'warm pants', 'winter boots']
+		clothes: ['parka', 'thermal underwear', 'sweater', 'warm pants', 'winter boots'],
+		image: '-29-15.jpg'
 	},
 	{
 		minTemp: -14,
 		maxTemp: -10,
-		clothes: ['parka', 'long-sleeved shirt', 'pants', 'boots']
+		clothes: ['parka', 'long-sleeved shirt', 'pants', 'boots'],
+		image: '-14-10.jpg'
 	},
 	{
 		minTemp: -9,
 		maxTemp: 0,
-		clothes: ['wool coat', 'sweater', 'pants']
+		clothes: ['wool coat', 'sweater', 'pants'],
+		image: '-09-0-w.jpg'
 	},
 	{
 		minTemp: 1,
 		maxTemp: 10,
-		clothes: ['jacket', 'long-sleeved shirt', 'pants']
+		clothes: ['jacket', 'long-sleeved shirt', 'pants'],
+		image: '01-10-w.jpg'
 	},
 	{
 		minTemp: 11,
 		maxTemp: 15,
-		clothes: ['light jacket', 't-shirt', 'pants']
+		clothes: ['light jacket', 't-shirt', 'pants'],
+		image: '11-15-w.jpg'
 	},
 	{
 		minTemp: 16,
 		maxTemp: 19,
-		clothes: ['long-sleeved shirt', 'pants']
+		clothes: ['long-sleeved shirt', 'pants'],
+		image: '16-19-w.jpg'
 	},
 	{
 		minTemp: 20,
 		maxTemp: 23,
-		clothes: ['t-shirt', 'pants']
+		clothes: ['t-shirt', 'pants'],
+		image: '20-23-m.jpg'
 	},
 	{
 		minTemp: 24,
 		maxTemp: 1000,
-		clothes: ['t-shirt', 'shorts', 'sandals']
+		clothes: ['t-shirt', 'shorts', 'sandals'],
+		image: '24-w.jpg'
 	}
 ];
-app.accessories = [
-	{
+app.accessories = {
+	clear_day: {
 		name: 'sunglasses',
-		condition: 'sunny'
+		emoji: '😎'
 	},
-	{
+	rain: {
 		name: 'umbrella',
-		precipType: 'rain'
+		emoji: '☔️'
 	},
-	{
+	snow: {
 		name: 'snowshoes',
-		precipType: 'snow'
+		emoji: '🎿'
 	}
-];
+};
+
+// helper function to convert strings with dashes to underscores (valid for js variables)
+app.dashToUnderscore = str => {
+	let newStr = '';
+	for (let i = 0; i < str.length; i++) {
+		if (str[i] === '-') {
+			newStr += '_';
+		} else {
+			newStr += str[i];
+		}
+	}
+	return newStr;
+};
 
 // get the weather from using my server which is calling the dark sky api
 app.getWeather = async (lat, long) => {
@@ -111,7 +134,7 @@ app.displayBackground = async summary => {
 	// console.log(img);
 
 	$('body').css('background-image', `url('${img.urls.regular}')`);
-	$('footer').html(`Powered by Dark Sky. Photo by <a href="${attribution.links.html}" target="_blank">${attribution.name}</a> on <a href="https://unsplash.com/" target="_blank">Unsplash</a>`);
+	$('footer').html(`Powered by Dark Sky. Background photo by <a href="${attribution.links.html}" target="_blank">${attribution.name}</a> on <a href="https://unsplash.com/" target="_blank">Unsplash</a>`);
 };
 
 // takes the summary and description from weather data and displays it in the #message div
@@ -125,34 +148,31 @@ app.displayWeatherSummary = (summary, description, temperature) => {
 
 // displays the appropriate outfit based on the current weather
 app.displayOutfitReco = weather => {
-	const temp = Math.floor(weather.currently.apparentTemperature);
+	const temp = Math.round(weather.currently.apparentTemperature);
 	
 	// iterate through the list of outfits and find the clothes that this temp falls into
 	const wearOutfit = app.outfits.filter(outfit => ((temp >= outfit.minTemp) && (temp <= outfit.maxTemp)));
 	console.log('wearOutfit', wearOutfit);
 
+	// display the what to wear heading and grab the newly created unordered list
 	app.$recoDiv.html(`<h4>What to wear:</h4><ul></ul>`);
 	const $recoList = $('#recommendation ul');
 
+	// display the outfit clothing items
 	wearOutfit[0].clothes.forEach(clothing => {
 		$recoList.append(`<li>${clothing}</li>`);
 	});
+
+	// display the outfit image
+	$('#recommendation-image').html(`<img src="${app.imagePath}/${wearOutfit[0].image}" class="img-fluid" alt="outfit">`);
 };
 
 // displays an accessory recommendation based on precipitation type and current probability
 app.displayAccessoryReco = weather => {
-	const precipType = weather.currently.precipType;
-	const precipProb = weather.currently.precipProbability;
+	const weatherIcon = app.dashToUnderscore(weather.hourly.icon);
 
-	console.log('precipType', precipType);
-	console.log('precipProb', precipProb);
-
-	if (precipProb > .5) {
-		app.accessories.forEach(accessory => {
-			if (accessory.precipType === precipType) {
-				app.$recoDiv.append(`<p>Don't forget to bring your ${accessory.name}!</p>`);
-			}
-		});
+	if (app.accessories[weatherIcon] != undefined) {
+		app.$recoDiv.append(`<p>Don't forget to bring your ${app.accessories[weatherIcon].name}! ${app.accessories[weatherIcon].emoji}</p>`);
 	}
 };
 

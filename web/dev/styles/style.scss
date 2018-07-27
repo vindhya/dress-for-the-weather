@@ -1,7 +1,7 @@
 body {
 	color: white;
 	background: black;
-	position: relative;
+	// position: relative;
 	height: 95vh;
 	transition: background-image 2s ease;
 	background-size: cover;
@@ -24,14 +24,15 @@ main {
 
 footer {
 	// text-align: right;
-	position: absolute;
-	bottom: 0;
+	// position: absolute;
+	// bottom: 0;
+	margin-left: 5px;
 }
 
 .content-box {
 	background: rgba(black, .5);
 	padding-top: 10px;
-	padding-bottom: 20px;
+	padding-bottom: 30px;
 	margin: 30px auto;
 }
 

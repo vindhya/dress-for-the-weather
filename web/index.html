@@ -21,23 +21,31 @@
 
 		<main class="container">
 
-			<div class="location-input">
-				<div>
-					<button id="location-button" class="btn btn-primary btn-lg btn-block">Use My Location</button>
-				</div>
 
-				<div class="text-center">
-					<form action="">
-						<label for="location">or enter your location:</label>
-						<input type="text" name="location" id="location-text">
-						<button type="submit" class="btn btn-primary">Submit</button>
-					</form>
+			<div class="location-input">
+				<div class="row align-items-center">
+					<div class="col-sm-auto">
+						<button id="location-button" class="btn btn-primary btn-lg">Use My Location</button>
+					</div>
+
+					<div class="text-center col-sm-auto">
+						<form action="">
+							<label for="location">or enter your location:</label>
+							<input type="text" name="location" id="location-text">
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</form>
+					</div>
 				</div>
 			</div>
 
-			<div id="message"></div>
+			<div class="row">
+				<div class="col-12 col-sm-6 col-md-8">
+					<div id="message"></div>
+					<div id="recommendation"></div>
+				</div>
+				<div id="recommendation-image" class="col-12 col-sm-6 col-md-4"></div>
+			</div>
 
-			<div id="recommendation"></div>
 		</main>
 
 	</div>
