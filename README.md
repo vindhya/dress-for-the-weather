@@ -3,5 +3,5 @@ A website that suggests what clothing and accessories to wear based on the curre
 
 To run Dress for the Weather locally:
 1. In the **api** directory, execute ```node app.js```
-2. Then, in a separate terminal window, execute ```npx gulp``` in the **web** directory
+2. Then, in a separate terminal window, execute ```gulp``` in the **web** directory
 3. Go to the local address specified by gulp in your web browser
